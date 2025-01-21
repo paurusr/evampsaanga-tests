@@ -1,5 +1,5 @@
 reporting:
-  enabled: false
+  enabled: true
   project-key: DEMO
   server:
     hostname: http://localhost
