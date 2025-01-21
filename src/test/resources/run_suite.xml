@@ -1,0 +1,10 @@
+<suite verbose="1" name="Testing Suite" skipfailedinvocationcounts="false" junit="false" annotations="JDK">
+    <parameter name="hub_url" value="http://localhost:4444/wd/hub"/>
+    <parameter name="browser" value="chrome"/>
+    <test name="Example Test Case">
+        <classes>
+            <class name="com.evampsaanga.selenium.GoogleTest"/>
+            <class name="com.evampsaanga.cli.CLICommandTest"/>
+        </classes>
+    </test>
+</suite>

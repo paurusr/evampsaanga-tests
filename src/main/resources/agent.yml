@@ -1,0 +1,10 @@
+reporting:
+  enabled: false
+  project-key: DEMO
+  server:
+    hostname: http://localhost
+    access-token: cl20teVm3xb6BK2YWLWfDv7juaC05BEtb5kpA0CpLCVrWSuNF7
+  run:
+    display-name: Provisioning Demo
+    retry-known-issues: false
+    treat-skips-as-failures: false
