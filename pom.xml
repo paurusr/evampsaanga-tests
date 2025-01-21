@@ -145,7 +145,7 @@
 
     <!-- AutoQA -->
     <dependency>
-      <groupId>com.aqanetics</groupId>
+      <groupId>si.paurusr.aqa</groupId>
       <artifactId>aqa-tools</artifactId>
       <version>1.0.6</version>
     </dependency>
