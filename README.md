@@ -1,35 +1,61 @@
-# AutoQA Test Framework Guide
+# AutoQA Test Framework User Guide
 
-## Prerequisites
-Before starting to write your first AutoQA test, you need to set up the **AutoQA archetype**. This archetype provides the foundational structure for your tests. Within the archetype, you will find two essential classes:
+## Table of Contents
+- [Getting Started](#getting-started)
+    - [Project Initialization](#project-initialization)
+    - [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [The @AQAInfo Annotation](#the-aqainfo-annotation)
+- [Test Case Structure](#test-case-structure)
+- [Logging](#logging)
+- [AQA Tasks Library](#aqa-tasks-library)
+    - [Module: aqa-cli](#module-aqa-cli)
+    - [Module: aqa-selenium](#module-aqa-selenium)
+    - [Module: aqa-metasploit](#module-aqa-metasploit)
+- [Adding Dependencies](#adding-dependencies)
+- [Notes](#notes)
+## Getting Started
+
+### Project Initialization
+To create a new AutoQA test project, use the Maven archetype provided by AQA. Run the following command in your terminal:
+
+```bash
+mvn archetype:generate \
+    -DgroupId=<com.package> \
+    -DartifactId=<artifact-name> \
+    -DarchetypeGroupId=com.aqanetics \
+    -DarchetypeArtifactId=aqa-tasks-archetype
+```
+There are already some examples in the project to help you get started:
+1. **Selenium Test Example**
+    - Location: `src/test/java/com/evampsaanga/selenium/GoogleTest.java`
+    - Demonstrates how to use the selenium-task module for web testing
+
+2. **CLI Test Example**
+    - Location: `src/test/java/com/evampsaanga/cli/CLICommandTest.java`
+    - Shows how to use the cli-task module for command-line testing
+
+Generated project provides the foundational structure for your tests. It contains two essential classes:
 
 - **BaseTest**: Contains the necessary methods to start a test run.
 - **BasePage**: Provides several utility methods to interact with web pages.
 
-To access the `@AqaInfo` annotation, add the `aqa-tools` dependency to your `pom.xml` file:
+It contains `aqa-tools` dependency for `@AqaInfo` annotation support as well.
 
-```xml
-<dependency>
-    <groupId>com.aqanetics</groupId>
-    <artifactId>aqa-tools</artifactId>
-    <version>1.0.6</version>
-</dependency>
-```
-
-## The `@AQAInfo` Annotation
+## The @AQAInfo Annotation
 The use of the `@AQAInfo` annotation is not mandatory, but it is highly recommended for enhancing the readability and maintainability of your tests. This annotation allows you to specify metadata about the test case, making it easier to manage and understand.
 
 ### Example Usage:
-```
+```java
 @AQAInfo(
-metadata = {"M365", "Feature", "MSOS"},
-name = "Sample Test Case",
-description = "This is a short description of the test case.",
-comment = "A detailed explanation of the test case goes here."
+    metadata = {"M365", "Feature", "MSOS"},
+    name = "Sample Test Case",
+    description = "This is a short description of the test case.",
+    comment = "A detailed explanation of the test case goes here."
 )
 @Test
 public class ExampleTest {
-// Test logic implementation
+    // Test logic implementation
 }
 ```
 
@@ -39,8 +65,6 @@ public class ExampleTest {
 3. **Description**: A concise description of the test case.
 4. **Comment**: A longer explanation or additional context for the test case.
 
----
-
 ## Test Case Structure
 AutoQA test cases follow a structured approach divided into three phases:
 
@@ -49,13 +73,12 @@ AutoQA test cases follow a structured approach divided into three phases:
 3. **Teardown Phase**: Code that is executed after the test completes, defined using `@AfterMethod`.
 
 ### Example Test Structure:
-```
+```java
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 public class SampleTest {
-
     @BeforeMethod
     public void setup() {
         // Setup logic before the test
@@ -73,12 +96,12 @@ public class SampleTest {
 }
 ```
 
+
 ### Best Practices:
 - Create a separate test class for each test case.
 - Limit each test class to one `@BeforeMethod`, one `@AfterMethod`, and one `@Test` method.
 - Write all test logic inside the test class; do not reference test logic outside of it.
 - Avoid referencing one `@Test` method from another.
-
 ---
 
 ## Logging
@@ -91,12 +114,11 @@ Adding logs to your test cases helps in tracking the execution flow and debuggin
 - **Error**: For critical issues or errors.
 
 ### Example Logging Code:
-```
+```java
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LoggingExample {
-
     private static final Logger logger = LoggerFactory.getLogger(LoggingExample.class);
 
     public void sampleMethod() {
@@ -107,8 +129,84 @@ public class LoggingExample {
     }
 }
 ```
-
 ---
 
-## Conclusion
-This guide outlines the foundational steps for writing AutoQA tests. By following the recommended structure, utilizing annotations, and incorporating logging, you can create maintainable and effective test cases.
+## AQA Tasks Library
+The aqa-tasks project is a multi-module Maven project designed to simplify basic configuration of AQA, automation and testing tasks. It includes three specialized modules:
+
+### Module: aqa-cli
+This module facilitates:
+- Executing CLI commands programmatically within Java
+- Supporting remote (SSH) command execution by providing ssh key
+- Capturing and verifying logs generated by these commands
+
+### Module: aqa-selenium
+This module provides:
+- Base configuration for Selenium WebDriver and Selenoid setups
+- A set of utility methods to streamline Selenium tests
+- Built-in logging to make debugging and test tracking easier
+
+### Module: aqa-metasploit
+This module focuses on:
+- Running Metasploit commands in an automated manner
+- Simplifying interaction with the `paurusr/runner:msf` container to execute Metasploit scripts
+
+## Adding Dependencies
+To use any of the aqa-tasks modules in your project, include them as dependencies in your pom.xml file.
+
+### Adding Individual Modules
+
+**For aqa-cli:**
+```xml
+<dependency>
+    <groupId>com.aqanetics</groupId>
+    <artifactId>aqa-cli</artifactId>
+    <version>0.9.4</version>
+</dependency>
+```
+
+**For aqa-selenium:**
+```xml
+<dependency>
+    <groupId>com.aqanetics</groupId>
+    <artifactId>aqa-selenium</artifactId>
+    <version>0.9.4</version>
+</dependency>
+```
+
+**For aqa-metasploit:**
+```xml
+<dependency>
+    <groupId>com.aqanetics</groupId>
+    <artifactId>aqa-metasploit</artifactId>
+    <version>0.9.4</version>
+</dependency>
+```
+
+### Adding Multiple Modules
+If you want to include more than one module, list them as separate dependencies:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.aqanetics</groupId>
+        <artifactId>aqa-cli</artifactId>
+        <version>0.9.4</version>
+    </dependency>
+    <dependency>
+        <groupId>com.aqanetics</groupId>
+        <artifactId>aqa-selenium</artifactId>
+        <version>0.9.4</version>
+    </dependency>
+    <dependency>
+        <groupId>com.aqanetics</groupId>
+        <artifactId>aqa-metasploit</artifactId>
+        <version>0.9.4</version>
+    </dependency>
+</dependencies>
+```
+
+## Notes
+- Ensure you are using the correct version of the modules based on the latest release in Maven Central.
+- The aqa-metasploit module requires access to the `paurusr/runner:msf` container. Ensure the container is running and accessible from your test environment.
+- The aqa-selenium module assumes Selenium server (Selenoid) is already configured in your environment or AQA is running in Docker.
